@@ -83,7 +83,8 @@ jobs:
             cp terraform/terraform.tfstate terraform.tfstate
             git add terraform.tfstate
             git commit -m "Mise à jour du Terraform state" || echo "Aucun changement à committer"
-            git push origin state
+            git push origin HEAD:state
           else
             echo "Le fichier terraform.tfstate n'existe pas. Rien à sauvegarder."
           fi
+
