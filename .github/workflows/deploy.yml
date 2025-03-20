@@ -16,6 +16,12 @@ jobs:
     name: "Lancement de Terraform"
     runs-on: ubuntu-latest
     steps:
+      - name: Vérifier le contenu du dossier Terraform
+        run: ls -la ./terraform
+
+      - name: Vérifier le contenu du dossier Principal
+        run: ls -la ./terraform
+
       - name: Checkout du code
         uses: actions/checkout@v2
 
