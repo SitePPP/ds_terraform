@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "lambda_execution_role"
+  name = "groupe12_lambda_execution_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -18,19 +18,19 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_policy_attachment" "lambda_policy" {
-  name       = "lambda_policy_attachment"
+  name       = "groupe12_lambda_policy_attachment"
   roles      = [aws_iam_role.lambda_role.name]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_lambda_function" "time_lambda" {
-  function_name = "time_lambda"
+  function_name = "groupe12_time_lambda"
   role          = aws_iam_role.lambda_role.arn
   handler       = "index.handler"
   runtime       = "nodejs18.x"
 
-  filename         = "/lambda/lambda.zip"
-  source_code_hash = filebase64sha256(filename)
+  filename         = "lambda/lambda.zip"
+  source_code_hash = filebase64sha256("lambda/lambda.zip")
 
   environment {
     variables = {
@@ -40,7 +40,7 @@ resource "aws_lambda_function" "time_lambda" {
 }
 
 resource "aws_api_gateway_rest_api" "time_api" {
-  name        = "time_api"
+  name        = "groupe12_time_api"
   description = "API Gateway pour la Lambda retournant l'heure actuelle"
 }
 
@@ -83,6 +83,6 @@ resource "aws_lambda_permission" "apigw" {
 }
 
 output "api_url" {
-  value = "${aws_api_gateway_deployment.deployment.invoke_url}/prod"
+  value       = "${aws_api_gateway_deployment.deployment.invoke_url}/prod"
   description = "URL de l'API déployée"
 }
