@@ -16,14 +16,16 @@ jobs:
     name: "Lancement de Terraform"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout du code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
       - name: Vérifier le contenu du dossier Terraform
         run: ls -la ./terraform
 
       - name: Vérifier le contenu du dossier Principal
         run: ls -la ./terraform
-
-      - name: Checkout du code
-        uses: actions/checkout@v2
 
       - name: Récupération de la branche 'state'
         working-directory: .
