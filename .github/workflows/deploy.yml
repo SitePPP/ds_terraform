@@ -71,10 +71,18 @@ jobs:
         run: |
           echo "API URL: $(terraform output api_url)"
 
-      - name: Sauvegarde du Terraform state dans 'state'
-        working-directory: .
+      - name: Configurer Git pour le commit
         run: |
-          cp terraform/terraform.tfstate terraform.tfstate
-          git add terraform.tfstate
-          git commit -m "Mise à jour du Terraform state"
-          git push origin state
+          git config user.email "ci-bot@example.com"
+          git config user.name "CI Bot"
+
+      - name: Sauvegarde du Terraform state dans 'state'
+        run: |
+          if [ -f terraform/terraform.tfstate ]; then
+            cp terraform/terraform.tfstate terraform.tfstate
+            git add terraform.tfstate
+            git commit -m "Mise à jour du Terraform state" || echo "Aucun changement à committer"
+            git push origin state
+          else
+            echo "Le fichier terraform.tfstate n'existe pas. Rien à sauvegarder."
+          fi
