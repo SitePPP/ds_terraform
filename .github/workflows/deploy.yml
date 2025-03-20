@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 name: "Script de déploiement"
 
 on:
@@ -79,4 +77,3 @@ jobs:
           git add terraform.tfstate
           git commit -m "Mise à jour du Terraform state"
           git push origin state
->>>>>>> Stashed changes
