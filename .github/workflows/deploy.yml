@@ -25,11 +25,12 @@ jobs:
       - name: Vérifier le contenu du dossier Principal
         run: ls -la
 
-      - name: Récupération de la branche 'state'
+      - name: Récupérer le Terraform state depuis la branche 'state'
         working-directory: .
         run: |
           git fetch origin state || echo "Branche state inexistante"
-          git checkout state || git checkout --orphan state
+          git checkout origin/state -- terraform.tfstate || echo "Aucun state à récupérer"
+
 
       - name: Restauration du Terraform state
         working-directory: .
