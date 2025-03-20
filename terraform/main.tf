@@ -6,10 +6,10 @@ resource "aws_iam_role" "lambda_role" {
   name = "groupe12_lambda_execution_role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = {
         Service = "lambda.amazonaws.com"
       }
@@ -29,8 +29,9 @@ resource "aws_lambda_function" "time_lambda" {
   handler       = "index.handler"
   runtime       = "nodejs18.x"
 
-  filename         = "lambda/lambda.zip"
-  source_code_hash = filebase64sha256("lambda/lambda.zip")
+  # Le fichier ZIP est attendu directement dans le répertoire Terraform
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
 
   environment {
     variables = {
@@ -58,10 +59,9 @@ resource "aws_api_gateway_method" "proxy_method" {
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
-  rest_api_id = aws_api_gateway_rest_api.time_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-
+  rest_api_id             = aws_api_gateway_rest_api.time_api.id
+  resource_id             = aws_api_gateway_resource.proxy.id
+  http_method             = aws_api_gateway_method.proxy_method.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.time_lambda.invoke_arn
