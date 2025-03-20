@@ -20,12 +20,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
+
       - name: Vérifier le contenu du dossier Terraform
         run: ls -la ./terraform
 
       - name: Vérifier le contenu du dossier Principal
-        run: ls -la ./terraform
+        run: ls -la
 
       - name: Récupération de la branche 'state'
         working-directory: .
@@ -65,6 +65,9 @@ jobs:
       - name: Terraform Validate
         working-directory: ./terraform
         run: terraform validate
+
+      - name: Supprimer l'infrastructure AWS
+        run: terraform destroy -auto-approve
 
       - name: Terraform Plan
         working-directory: ./terraform
